@@ -1,0 +1,21 @@
+Quick and dirty:
+
+Notes:
+
+All spidering is done via fproxy
+Description is currently the page title
+
+1:
+Add starting points to the file "LibrarianCrawler.java". Akl pages given will
+be tried, and after that, only links going to "localhost" or "127.0.0.1"
+
+2:
+Compile with:
+cyberdo@storm ~/LibrarianSpider $ javac -cp freenet-stable-latest.jar:. LibrarianCrawler.java 
+
+3:
+Run with:
+cyberdo@storm ~/LibrarianSpider $ java -cp freenet-stable-latest.jar:. LibrarianCrawler
+
+4:
+Upload "out.txt" to the network.. it's the new index
