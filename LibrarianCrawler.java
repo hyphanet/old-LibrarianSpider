@@ -39,7 +39,14 @@ public class LibrarianCrawler {
 		String urlsstring;
 		String muststartwith = "http://127.0.0.1:8888/";
 		String muststartwith2 = "http://localhost:8888/";
-		uriInList.add(new URIWrapper("http://localhost:8888/USK@BPZppy07RyID~NGihHgs4AAw3fUXxgtKIrwRu5rtpWE,k5yjkAFJC93JkydKl6vpY0Zy9D8ec1ymv2XP4Tx5Io0,AQABAAE/FreeHoo/5/"));
+		//uriq.add(new URIWrapper("http://localhost:8888/SSK@LvX5TuKWlL3dbbpwn-2NvQDa5s9YHia~EeHItgBCugA,24Av4ZiTyEYvGKFgH0I~mYEdRoNb9tHQbZO2-89H0~c,AQABAAE/gallery-001/"));
+		uriInList.add(new URIWrapper("http://wiki.freenetproject.org/FreenetTestPages"));
+		uriInList.add(new URIWrapper("http://127.0.0.1:8888/SSK@60I8H8HinpgZSOuTSD66AVlIFAy-xsppFr0YCzCar7c,NzdivUGCGOdlgngOGRbbKDNfSCnjI0FXjHLzJM4xkJ4,AQABAAE/index-3/"));
+		uriInList.add(new URIWrapper("http://localhost:8888/SSK@60I8H8HinpgZSOuTSD66AVlIFAy-xsppFr0YCzCar7c,NzdivUGCGOdlgngOGRbbKDNfSCnjI0FXjHLzJM4xkJ4,AQABAAE/index-4/"));
+		/*uriq.add(new URIWrapper(""));
+		uriq.add(new URIWrapper(""));
+		uriq.add(new URIWrapper(""));
+		*/
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("out.txt")));
 		while (uriInList.peek() != null) {
 			try {
@@ -95,8 +102,6 @@ public class LibrarianCrawler {
 			String href = "";
 			while ((hrefpos = indata.indexOf("href=\"", hrefpos + 1)) > 0) {
 				href = indata.substring(hrefpos + 6, indata.indexOf("\"", hrefpos+7));
-				if(href.charAt(0)=='\"') href="invalid";
-				try{
 				urlsstring += u.resolve(href).getPath();
 				//if (!href.endsWith("htm") && !href.endsWith("html") && !href.endsWith("/") && !href.endsWith("txt")) {
 				String h = href.toLowerCase();
@@ -105,20 +110,20 @@ public class LibrarianCrawler {
 				} else  if ((u.resolve(href).toString().startsWith(muststartwith)) || (u.resolve(href).toString().startsWith(muststartwith2))){
 					URIWrapper uw = new URIWrapper(u.resolve(href).toString());
 					if (!uw.equals(currenturi))
+						if (!uriInList.contains(uw))
 							if (!uriOutList.contains(uw)) {
 								uriInList.add(new URIWrapper(u.resolve(href).toString()));
 								//System.err.print(".");
 							}	
-				} 
-				}catch (Exception e){
-				}
+				} else
+					//System.err.println("External link: "+ u.resolve(href));
+					;
 			}
-			System.out.println(indata);
 			//currenturi.descr = indata.replaceAll(".*<[tT][iI][tT][lL][eE]>.*</[tT][iI][tT][lL][eE]>", "\\1");
-			//currenturi.descr = indata.replaceAll(".*<[tT][iI][tT][lL][eE]>", "").replaceAll("</[tT][iI][tT][lL][eE]>.*", "");
+			currenturi.descr = indata.replaceAll(".*<[tT][iI][tT][lL][eE]>", "").replaceAll("</[tT][iI][tT][lL][eE]>.*", "");
 			if ((u.resolve(href).toString().startsWith(muststartwith)) || (u.resolve(href).toString().startsWith(muststartwith2))){
 				indata = indata.toLowerCase();
-		//		indata = indata.replaceAll(".*<body[^>]*>", "");
+				indata = indata.replaceAll(".*<body[^>]*>", "");
 				indata = indata.replaceAll("</body[^>]*", "");
 				indata = indata.replaceAll("<href=\".[^\"]*\"", "><");
 				indata = indata.replaceAll("<[^>]*>", "");
